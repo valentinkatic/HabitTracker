@@ -87,12 +87,12 @@ public class MainActivity extends AppCompatActivity {
 
         if (habits != null && habits.size()>0) {
             StringBuilder builder = new StringBuilder();
-            builder.append(String.format(Locale.getDefault(), "%4s|%-10s|%-15s|%-11s|%-8s\n", HabitEntry._ID, HabitEntry.COLUMN_NAME, HabitEntry.COLUMN_DESCRIPTION, HabitEntry.COLUMN_DATE, HabitEntry.COLUMN_DURATION));
+            builder.append(String.format(Locale.getDefault(), "%3s|%-15s|%-20s|%-11s|%-8s\n\n", HabitEntry._ID, HabitEntry.COLUMN_NAME, HabitEntry.COLUMN_DESCRIPTION, HabitEntry.COLUMN_DATE, HabitEntry.COLUMN_DURATION));
 
             for (Habit h : habits){
                 String myFormat = "dd.MM.yyyy.";
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.getDefault());
-                builder.append(String.format(Locale.getDefault(), "%03d|%-10s|%-15s|%-11s|%-4dmin\n", h.getId(), h.getName(), h.getDescription(), sdf.format(h.getDate()), h.getDuration()));
+                builder.append(String.format(Locale.getDefault(), "%03d|%-15s|%-20s|%-11s|%-5dmin\n", h.getId(), h.getName(), h.getDescription(), sdf.format(h.getDate()), h.getDuration()));
             }
 
             habitsList.setText(builder.toString());
@@ -100,16 +100,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void insertNewHabit(){
-        Habit habit = new Habit(
-                nameEdit.getText().toString(),
-                descriptionEdit.getText().toString(),
-                date.getTimeInMillis(),
-                Long.parseLong(durationEdit.getText().toString())
-        );
         DatabaseHelper db = new DatabaseHelper(MainActivity.this);
         try {
+            Habit habit = new Habit(
+                    nameEdit.getText().toString(),
+                    descriptionEdit.getText().toString(),
+                    date.getTimeInMillis(),
+                    Long.parseLong(durationEdit.getText().toString())
+            );
+
             if (db.insertHabit(habit)){
                 Toast.makeText(this, R.string.insert_successful, Toast.LENGTH_SHORT).show();
+                nameEdit.setText("");
+                descriptionEdit.setText("");
+                dateEdit.setText("");
+                durationEdit.setText("");
             } else {
                 Toast.makeText(this, R.string.insert_failed, Toast.LENGTH_SHORT).show();
             }
@@ -118,10 +123,6 @@ public class MainActivity extends AppCompatActivity {
         }
         finally {
             db.close();
-            nameEdit.setText("");
-            descriptionEdit.setText("");
-            dateEdit.setText("");
-            durationEdit.setText("");
         }
     }
 
