@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Habit Tracker</string>
+    <string name="name">Name</string>
+    <string name="description">Description</string>
+    <string name="start_date">Start Date</string>
+    <string name="duration">Duration (in minutes)</string>
+    <string name="insert_habit">Insert Habit</string>
+    <string name="refresh_data">Refresh Data</string>
+    <string name="insert_successful">Insert Successful</string>
+    <string name="insert_failed">Insert Failed</string>
+</resources>
